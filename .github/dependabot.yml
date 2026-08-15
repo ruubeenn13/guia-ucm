@@ -1,0 +1,45 @@
+version: 2
+
+updates:
+  - package-ecosystem: maven
+    directory: /backend
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'chore(backend)'
+    labels: [dependencias, backend]
+
+  - package-ecosystem: npm
+    directory: /frontend
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'chore(frontend)'
+    labels: [dependencias, frontend]
+    groups:
+      # Las actualizaciones menores y de parche se agrupan en una sola PR
+      # para no ahogar el repositorio.
+      menores-y-parches:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: 'chore(ci)'
+    labels: [dependencias, ci]
+
+  - package-ecosystem: docker
+    directories:
+      - /frontend
+      - /backend
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: 'chore(docker)'
+    labels: [dependencias, docker]

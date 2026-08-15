@@ -1,0 +1,18 @@
+# Finales de línea LF en el repositorio, se trabaje desde donde se trabaje.
+# Sin esto, un `mvnw` con CRLF hecho en Windows falla al ejecutarse en el
+# contenedor de construcción o en la CI.
+* text=auto eol=lf
+
+# Scripts de Windows: estos sí llevan CRLF.
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Binarios: que Git no toque nada.
+*.png  binary
+*.jpg  binary
+*.webp binary
+*.avif binary
+*.ico  binary
+*.woff  binary
+*.woff2 binary
+*.jar   binary
