@@ -1,5 +1,5 @@
 # ── Etapa 1: construcción ────────────────────────────────────────────
-FROM node:22-alpine AS construccion
+FROM node:26-alpine AS construccion
 
 WORKDIR /app
 
