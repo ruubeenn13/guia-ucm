@@ -1,0 +1,92 @@
+# ─────────────────────────────────────────────────────────────────────
+#  Guía UCM · configuración común
+#
+#  Todo lo sensible llega por variable de entorno. Aquí no hay ni una
+#  credencial escrita.
+# ─────────────────────────────────────────────────────────────────────
+
+spring:
+  application:
+    name: guia-ucm-api
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    hikari:
+      pool-name: guia-ucm-pool
+      maximum-pool-size: 10
+      connection-timeout: 10000
+
+  jpa:
+    hibernate:
+      # El esquema lo manda Flyway. `validate` hace que la aplicación no
+      # arranque si la base de datos no coincide con las entidades.
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+          batch_size: 30
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    validate-on-migrate: true
+
+  jackson:
+    default-property-inclusion: non_null
+
+  # Límites de tamaño de petición: nada de cuerpos de megas.
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 1MB
+
+server:
+  port: 8080
+  # Detrás de Nginx y Traefik: se respetan las cabeceras X-Forwarded-*.
+  forward-headers-strategy: native
+  error:
+    include-message: never
+    include-stacktrace: never
+    include-binding-errors: never
+    include-exception: false
+  tomcat:
+    max-http-form-post-size: 64KB
+    max-swallow-size: 1MB
+  compression:
+    enabled: true
+    mime-types: application/json,application/problem+json
+    min-response-size: 1024
+
+guia-ucm:
+  cors-origin: ${CORS_ORIGIN:http://localhost:5173}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  endpoint:
+    health:
+      show-details: never
+      probes:
+        enabled: true
+  # Los endpoints de gestión escuchan en otro puerto, que el compose deja
+  # solo en la red interna de Docker. Nunca salen a internet.
+  server:
+    port: 8081
+
+# Swagger apagado por defecto. Solo el perfil `dev` lo enciende.
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+logging:
+  level:
+    root: INFO
+    dev.rubenlav.guiaucm: INFO

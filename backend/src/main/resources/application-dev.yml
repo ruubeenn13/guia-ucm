@@ -1,0 +1,33 @@
+# Perfil de desarrollo local. Nunca se activa en el servidor.
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+
+# Swagger UI en http://localhost:8080/swagger-ui.html
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,flyway
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    dev.rubenlav.guiaucm: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.flywaydb: DEBUG

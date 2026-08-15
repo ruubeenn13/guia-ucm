@@ -1,0 +1,28 @@
+# Perfil de producción.
+#
+# Swagger y el detalle de los endpoints de gestión quedan apagados: en un
+# servicio público no hace falta publicar el mapa de la API.
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  endpoint:
+    health:
+      show-details: never
+
+logging:
+  level:
+    root: WARN
+    dev.rubenlav.guiaucm: INFO
+  # Logs en JSON para que el recolector del homelab los ingiera tal cual.
+  structured:
+    format:
+      console: ecs
