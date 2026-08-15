@@ -14,7 +14,7 @@ RUN npm run build
 # ── Etapa 2: servidor ────────────────────────────────────────────────
 # Imagen sin privilegios: el proceso corre como el usuario 101, nunca
 # como root. Por eso escucha en el 8080 y no en el 80.
-FROM nginxinc/nginx-unprivileged:1.27-alpine AS servidor
+FROM nginxinc/nginx-unprivileged:1.31-alpine AS servidor
 
 COPY --chown=nginx:nginx nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=construccion --chown=nginx:nginx /app/dist /usr/share/nginx/html
