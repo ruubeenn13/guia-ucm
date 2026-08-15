@@ -1,0 +1,93 @@
+# ─────────────────────────────────────────────────────────────────────
+#  Guía UCM — despliegue en el homelab.
+#
+#  Dos servicios: la web (Nginx con los estáticos + proxy a la API) y la
+#  API (Spring Boot). La base de datos NO se levanta aquí: se usa el
+#  MySQL 8.4 que ya está desplegado en el homelab.
+#
+#  Traefik entra por la red externa `proxy`; la API y la base de datos no
+#  se publican a internet.
+#
+#      cp .env.example .env    # y rellenar
+#      docker compose up -d --build
+# ─────────────────────────────────────────────────────────────────────
+
+services:
+  guia-ucm-web:
+    build:
+      context: ./frontend
+    image: guia-ucm-web:latest
+    container_name: guia-ucm-web
+    restart: unless-stopped
+    depends_on:
+      guia-ucm-api:
+        condition: service_healthy
+    networks:
+      - proxy
+      - interna
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: proxy
+      traefik.http.routers.guia-ucm.rule: Host(`ucm.rubenlav.dev`)
+      traefik.http.routers.guia-ucm.entrypoints: websecure
+      # Descomentar con el nombre del certresolver comodín ya existente:
+      # traefik.http.routers.guia-ucm.tls.certresolver: <certresolver-wildcard>
+      traefik.http.routers.guia-ucm.tls: 'true'
+      # 8080 y no 80: el Nginx corre sin privilegios.
+      traefik.http.services.guia-ucm.loadbalancer.server.port: '8080'
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ['CMD', 'wget', '--quiet', '--tries=1', '--spider', 'http://127.0.0.1:8080/salud']
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  guia-ucm-api:
+    build:
+      context: ./backend
+    image: guia-ucm-api:latest
+    container_name: guia-ucm-api
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+      DB_URL: ${DB_URL}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      JWT_SECRET: ${JWT_SECRET}
+      TMDB_API_KEY: ${TMDB_API_KEY}
+      CORS_ORIGIN: ${CORS_ORIGIN}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      EMAIL_FROM: ${EMAIL_FROM}
+    networks:
+      - interna
+      # Red del stack de MySQL que ya existe. Ajustar el nombre real en
+      # la sección `networks` de abajo.
+      - basedatos
+    # Sin `ports`: la API solo es accesible desde la red interna, nunca
+    # desde fuera. Todo el tráfico entra por Nginx.
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ['CMD', 'wget', '--quiet', '--tries=1', '--spider', 'http://127.0.0.1:8081/actuator/health']
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+networks:
+  # Red de Traefik, creada por su propio stack.
+  proxy:
+    external: true
+  # Red del stack de MySQL existente. Cambiar por el nombre real
+  # (`docker network ls` para verlo).
+  basedatos:
+    external: true
+    name: mysql_default
+  # Red privada entre la web y la API.
+  interna:
+    driver: bridge

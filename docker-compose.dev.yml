@@ -1,0 +1,36 @@
+# ─────────────────────────────────────────────────────────────────────
+#  Base de datos EFÍMERA para desarrollo local.
+#
+#  No es la base de datos de producción ni pretende serlo: los datos viven
+#  en memoria y se pierden al parar el contenedor, que es justo lo que se
+#  quiere para poder repetir las migraciones desde cero.
+#
+#      docker compose -f docker-compose.dev.yml up -d
+#      docker compose -f docker-compose.dev.yml down
+# ─────────────────────────────────────────────────────────────────────
+
+services:
+  mysql-dev:
+    image: mysql:8.4
+    container_name: guia-ucm-mysql-dev
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: root_dev
+      MYSQL_DATABASE: guia_ucm
+      MYSQL_USER: guia_ucm
+      MYSQL_PASSWORD: guia_ucm_dev
+    ports:
+      # 3307 en el anfitrión para no chocar con un MySQL local en el 3306.
+      - '127.0.0.1:3307:3306'
+    tmpfs:
+      # Datos en memoria: contenedor de usar y tirar.
+      - /var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', '127.0.0.1', '-uroot', '-proot_dev']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
