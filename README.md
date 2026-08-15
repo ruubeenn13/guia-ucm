@@ -8,7 +8,7 @@
 historia y no como se estrenaron. Marcas lo que ya has visto, la guía lleva la cuenta y te dice
 cuánto te queda y en cuántos días lo terminas.
 
-[![CI](https://github.com/d4rkl0k/guia-ucm/actions/workflows/ci.yml/badge.svg)](https://github.com/d4rkl0k/guia-ucm/actions/workflows/ci.yml)
+[![CI](https://github.com/ruubeenn13/guia-ucm/actions/workflows/ci.yml/badge.svg)](https://github.com/ruubeenn13/guia-ucm/actions/workflows/ci.yml)
 [![Licencia MIT](https://img.shields.io/badge/licencia-MIT-informational)](LICENSE)
 [![Java 21](https://img.shields.io/badge/Java-21-orange)](backend/)
 [![React 19](https://img.shields.io/badge/React-19-61dafb)](frontend/)
@@ -122,7 +122,7 @@ Más detalle en [`docs/01-arquitectura.md`](docs/01-arquitectura.md).
 Requisitos: **JDK 21**, **Node 22+** y **Docker**.
 
 ```bash
-git clone https://github.com/d4rkl0k/guia-ucm.git
+git clone https://github.com/ruubeenn13/guia-ucm.git
 cd guia-ucm
 cp .env.example .env      # y rellenar (ver más abajo)
 ```

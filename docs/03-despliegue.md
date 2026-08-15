@@ -56,7 +56,7 @@ homelab/
 
 ```bash
 cd stacks
-git clone https://github.com/d4rkl0k/guia-ucm.git
+git clone https://github.com/ruubeenn13/guia-ucm.git
 cd guia-ucm
 cp .env.example .env
 $EDITOR .env
