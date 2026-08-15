@@ -14,7 +14,7 @@ COPY src ./src
 RUN mvn --batch-mode --no-transfer-progress -DskipTests package
 
 # ── Etapa 2: ejecución ───────────────────────────────────────────────
-FROM eclipse-temurin:21-jre-alpine AS ejecucion
+FROM eclipse-temurin:25-jre-alpine AS ejecucion
 
 # Usuario sin privilegios: nada corre como root.
 RUN addgroup --system --gid 1001 guiaucm \
