@@ -1,0 +1,123 @@
+/* ─────────────────────────────────────────────────────────────────────
+   Tokens de diseño de Guía UCM.
+
+   Toda la paleta vive aquí como variables CSS. El tema se cambia poniendo
+   `data-tema="claro"` o `data-tema="oscuro"` en <html>: ningún componente
+   conoce colores literales, solo nombres semánticos.
+
+   Los dos temas mantienen contraste AA (4.5:1) en texto normal.
+   ───────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Tipografía ──────────────────────────────────────────────────── */
+  --fuente-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
+  --fuente-texto: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* ── Radios y sombras ────────────────────────────────────────────── */
+  --radio-sm: 0.375rem;
+  --radio-md: 0.75rem;
+  --radio-lg: 1.25rem;
+  --radio-full: 9999px;
+
+  --sombra-baja: 0 1px 2px rgb(0 0 0 / 0.06), 0 2px 8px rgb(0 0 0 / 0.05);
+  --sombra-media: 0 4px 12px rgb(0 0 0 / 0.1), 0 12px 32px rgb(0 0 0 / 0.08);
+  --sombra-alta: 0 8px 24px rgb(0 0 0 / 0.14), 0 24px 60px rgb(0 0 0 / 0.12);
+
+  /* ── Ritmo ───────────────────────────────────────────────────────── */
+  --transicion-rapida: 140ms cubic-bezier(0.22, 1, 0.36, 1);
+  --transicion-media: 260ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Alto de la barra fija; lo usan los `scroll-margin` para que nada
+     quede oculto debajo al saltar a un título. */
+  --alto-barra: 4.5rem;
+
+  /* ── Tema claro (por defecto) ────────────────────────────────────── */
+  --c-fondo: #f6f4f1;
+  --c-fondo-degradado: #ece7e0;
+  --c-superficie: #ffffff;
+  --c-superficie-alt: #f0ece6;
+  --c-superficie-vidrio: rgb(255 255 255 / 0.72);
+  --c-borde: #ded7cd;
+  --c-borde-fuerte: #c6bdaf;
+
+  --c-texto: #17151a;
+  --c-texto-suave: #57515e;
+  --c-texto-tenue: #7d7684;
+  --c-texto-invertido: #ffffff;
+
+  --c-acento: #b3121b;
+  --c-acento-fuerte: #8d0d15;
+  --c-acento-suave: #fbe9e9;
+  --c-acento-contraste: #ffffff;
+
+  --c-exito: #146c43;
+  --c-aviso: #8a5300;
+  --c-error: #a4161a;
+
+  --c-foco: #1d4ed8;
+  /* Base de los carteles: oscura en los dos temas, porque una carátula
+     real también lo es. Así la rejilla se lee igual de bien de día que
+     de noche. */
+  --c-cartel-base: #2a2531;
+  --c-sombra-hero: rgb(20 16 24 / 0.55);
+
+  /* Colores por tipo de contenido: `-linea` para bordes y puntos,
+     `-texto` para texto sobre superficie. */
+  --tipo-pelicula: #c1121f;
+  --tipo-pelicula-texto: #8e0d17;
+  --tipo-serie: #1d4ed8;
+  --tipo-serie-texto: #1a3faf;
+  --tipo-corto: #b45309;
+  --tipo-corto-texto: #8a3f07;
+  --tipo-especial: #7c3aed;
+  --tipo-especial-texto: #5b21b6;
+  --tipo-animacion: #0f766e;
+  --tipo-animacion-texto: #0b564f;
+  --tipo-proxima: #52525b;
+  --tipo-proxima-texto: #3f3f46;
+}
+
+[data-tema='oscuro'] {
+  --c-fondo: #0b0a0f;
+  --c-fondo-degradado: #14111c;
+  --c-superficie: #16141c;
+  --c-superficie-alt: #1f1c28;
+  --c-superficie-vidrio: rgb(22 20 28 / 0.68);
+  --c-borde: #2e2a3a;
+  --c-borde-fuerte: #443e56;
+
+  --c-texto: #f3f1f6;
+  --c-texto-suave: #b1aabe;
+  --c-texto-tenue: #8b8398;
+  --c-texto-invertido: #0b0a0f;
+
+  --c-acento: #ff4d4f;
+  --c-acento-fuerte: #ff7173;
+  --c-acento-suave: rgb(255 77 79 / 0.14);
+  --c-acento-contraste: #17040a;
+
+  --c-exito: #4ade80;
+  --c-aviso: #fbbf24;
+  --c-error: #ff6b6b;
+
+  --c-foco: #7dd3fc;
+  --c-cartel-base: #17141f;
+  --c-sombra-hero: rgb(4 3 8 / 0.72);
+
+  --sombra-baja: 0 1px 2px rgb(0 0 0 / 0.5), 0 2px 8px rgb(0 0 0 / 0.35);
+  --sombra-media: 0 4px 14px rgb(0 0 0 / 0.55), 0 14px 34px rgb(0 0 0 / 0.4);
+  --sombra-alta: 0 10px 28px rgb(0 0 0 / 0.6), 0 28px 70px rgb(0 0 0 / 0.5);
+
+  --tipo-pelicula: #ff5a5f;
+  --tipo-pelicula-texto: #ff9094;
+  --tipo-serie: #6ea8fe;
+  --tipo-serie-texto: #a3c8ff;
+  --tipo-corto: #f0a32e;
+  --tipo-corto-texto: #f7c97e;
+  --tipo-especial: #b794f6;
+  --tipo-especial-texto: #d0b9fb;
+  --tipo-animacion: #2dd4bf;
+  --tipo-animacion-texto: #85ecdd;
+  --tipo-proxima: #a1a1aa;
+  --tipo-proxima-texto: #c9c9d1;
+}

@@ -1,0 +1,179 @@
+@import 'tailwindcss';
+@import './styles/tokens.css';
+
+/* Los tokens semánticos se exponen a Tailwind con `@theme inline` para que
+   las utilidades (`bg-superficie`, `text-suave`…) sigan apuntando a la
+   variable CSS y cambien solas al conmutar el tema. */
+@theme inline {
+  --color-fondo: var(--c-fondo);
+  --color-superficie: var(--c-superficie);
+  --color-superficie-alt: var(--c-superficie-alt);
+  --color-borde: var(--c-borde);
+  --color-borde-fuerte: var(--c-borde-fuerte);
+
+  --color-texto: var(--c-texto);
+  --color-suave: var(--c-texto-suave);
+  --color-tenue: var(--c-texto-tenue);
+  --color-invertido: var(--c-texto-invertido);
+
+  --color-acento: var(--c-acento);
+  --color-acento-fuerte: var(--c-acento-fuerte);
+  --color-acento-suave: var(--c-acento-suave);
+  --color-acento-contraste: var(--c-acento-contraste);
+
+  --color-exito: var(--c-exito);
+  --color-aviso: var(--c-aviso);
+  --color-error: var(--c-error);
+
+  --font-display: var(--fuente-display);
+  --font-texto: var(--fuente-texto);
+
+  --radius-sm: var(--radio-sm);
+  --radius-md: var(--radio-md);
+  --radius-lg: var(--radio-lg);
+
+  --shadow-baja: var(--sombra-baja);
+  --shadow-media: var(--sombra-media);
+  --shadow-alta: var(--sombra-alta);
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    /* Tipografía fluida: nunca hace falta zoom para leer, ni en 320 px ni
+       en un monitor 4K. */
+    font-size: clamp(15px, 0.9rem + 0.2vw, 18px);
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--c-fondo);
+    background-image:
+      radial-gradient(60rem 40rem at 82% -10%, var(--c-acento-suave), transparent 65%),
+      linear-gradient(180deg, var(--c-fondo-degradado) 0%, var(--c-fondo) 38%);
+    background-attachment: fixed;
+    color: var(--c-texto);
+    font-family: var(--fuente-texto);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    /* Muescas y barras de gestos de iOS. */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--fuente-display);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 0.95;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Foco siempre visible, en ambos temas y sobre cualquier fondo. */
+  :focus-visible {
+    outline: 3px solid var(--c-foco);
+    outline-offset: 2px;
+    border-radius: var(--radio-sm);
+  }
+
+  ::selection {
+    background: var(--c-acento);
+    color: var(--c-acento-contraste);
+  }
+
+  /* El scroll no debe dejar nada oculto bajo la barra fija. */
+  [id] {
+    scroll-margin-top: calc(var(--alto-barra) + 1rem);
+  }
+}
+
+@layer components {
+  /* Panel translúcido sobre imagen. Con `backdrop-filter` cuando el
+     navegador lo soporta y con un color sólido cuando no. */
+  .vidrio {
+    background: var(--c-superficie-vidrio);
+    border: 1px solid var(--c-borde);
+    backdrop-filter: blur(14px) saturate(140%);
+  }
+
+  @supports not (backdrop-filter: blur(1px)) {
+    .vidrio {
+      background: var(--c-superficie);
+    }
+  }
+
+  /* Titular de display con el corte tipográfico de los carteles. */
+  .titular {
+    font-family: var(--fuente-display);
+    letter-spacing: 0.015em;
+    line-height: 0.9;
+    text-transform: uppercase;
+  }
+
+  /* Área táctil mínima de 44 px en cualquier control. */
+  .tactil {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+}
+
+@layer utilities {
+  .contenedor-guia {
+    width: 100%;
+    max-width: 90rem;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 3vw, 2.5rem);
+  }
+
+  /* Solo para lectores de pantalla. */
+  .solo-lectores {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+/* Brillo que recorre los esqueletos de carga. */
+@keyframes brillo {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Quien pide menos movimiento, recibe menos movimiento. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
