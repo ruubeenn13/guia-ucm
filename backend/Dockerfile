@@ -1,5 +1,5 @@
 # ── Etapa 1: construcción ────────────────────────────────────────────
-FROM maven:3.9-eclipse-temurin-21-alpine AS construccion
+FROM maven:3.9-eclipse-temurin-26-alpine AS construccion
 
 WORKDIR /app
 
